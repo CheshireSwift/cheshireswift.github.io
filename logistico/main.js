@@ -1,80 +1,99 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var logistico = function() {
-    var Crafty = require('craftyjs');
-    var _ = require('lodash');
+var Crafty = require('craftyjs');
+var _ = require('lodash');
 
-    return {
-        init: init
-    };
+_.assign(exports, {
+  grid: isoGrid
+});
 
-    function init() {
-        //Crafty.init(500, 350, document.getElementById('game'));
-        Crafty.init();
-        //Crafty.e('2D, DOM, Color').attr({x: 0, y: 0, w: 100, h: 100}).color('#00CCFF');
-        var iso = Crafty.isometric.size(128);
-        selectionLayer();
-        var tiles = _.map(_.range(8), function() {
-            return _.map(_.range(8), function(y) {
-                var color = '#00' + (8 * (y+1) + 10) + 'FF'
-                return Crafty.e('2D, DOM, Color').attr({w: 72, h: 72, z: y}).color(color);
-            });
-        });
+function isoGrid() {
+  var iso = Crafty.isometric.size(128);
+  var tiles = _.map(_.range(8), function() {
+    return _.map(_.range(8), function(y) {
+      var color = '#00' + (8 * (y+1) + 10) + 'FF'
+      return Crafty.e('2D, DOM, Color').attr({w: 72, h: 72, z: y}).color(color);
+    });
+  });
 
-        _.forEach(tiles, function(row, i) {
-            _.forEach(row, function(tile, y) {
-                iso.place(i, y, 0, tile);
-            });
-        });
+  _.forEach(tiles, function(row, i) {
+    _.forEach(row, function(tile, y) {
+      iso.place(i, y, 0, tile);
+    });
+  });
+
+  return {
+    craftyIso: iso,
+    tiles: tiles
+  };
+}
+
+},{"craftyjs":14,"lodash":35}],2:[function(require,module,exports){
+var Crafty = require('craftyjs');
+var _ = require('lodash');
+
+_.assign(exports, {
+  layer: selectionLayer
+});
+
+function selectionLayer() {
+  var mouseDown;
+  var selectionBox = Crafty.e('2D, DOM, Color')
+  .attr({
+    x: -1, y: -1, w: -1, h: -1,
+    z: 1000,
+    alpha: 0.5
+  });
+
+  var mouseLayer = Crafty.e('2D, DOM, Mouse')
+  .attr({x: Crafty.viewport._x, y: Crafty.viewport._y, w: Crafty.viewport._width, h: Crafty.viewport._height})
+  .bind('MouseDown', function (MouseEvent) {
+    mouseDown = { x: MouseEvent.realX, y: MouseEvent.realY };
+  })
+  .bind('MouseUp', function () {
+    mouseDown = undefined;
+    selectionBox.h = 0;
+    selectionBox.w = 0;
+  })
+  .bind('MouseMove', function (MouseEvent) {
+    if (mouseDown) {
+      updateSelectionBox(MouseEvent);
     }
+  });
 
-    function selectionLayer() {
-        var mouseDown;
-        var selectionBox = Crafty.e('2D, DOM, Color')
-            .attr({
-              x: -1, y: -1, w: -1, h: -1,
-              z: 1000,
-              alpha: 0.5
-            });
+  return {
+    box: selectionBox,
+    layer: mouseLayer
+  };
 
-        var mouseLayer = Crafty.e('2D, DOM, Mouse')
-            .attr({x: Crafty.viewport._x, y: Crafty.viewport._y, w: Crafty.viewport._width, h: Crafty.viewport._height})
-            .bind('MouseDown', function (MouseEvent) {
-                mouseDown = { x: MouseEvent.realX, y: MouseEvent.realY };
-            })
-            .bind('MouseUp', function () {
-                mouseDown = undefined;
-                selectionBox.h = 0;
-                selectionBox.w = 0;
-            })
-            .bind('MouseMove', function (MouseEvent) {
-                if (mouseDown) {
-                    updateSelectionBox(MouseEvent);
-                }
-            });
+  function updateSelectionBox(MouseEvent) {
+    selectionBox.x = (MouseEvent.realX > mouseDown.x) ? mouseDown.x : MouseEvent.realX;
+    selectionBox.y = (MouseEvent.realY > mouseDown.y) ? mouseDown.y : MouseEvent.realY;
 
-        return {
-            box: selectionBox,
-            layer: mouseLayer
-        };
+    var width = Math.abs(MouseEvent.realX - mouseDown.x);
+    var height = Math.abs(MouseEvent.realY - mouseDown.y);
+    selectionBox.w = width;
+    selectionBox.h = height;
 
-        function updateSelectionBox(MouseEvent) {
-            selectionBox.x = (MouseEvent.realX > mouseDown.x) ? mouseDown.x : MouseEvent.realX;
-            selectionBox.y = (MouseEvent.realY > mouseDown.y) ? mouseDown.y : MouseEvent.realY;
+    selectionBox.color('#FF' + Math.floor(10 + 40 * (1 + Math.sin((width + height) / 200))) + '00');
+  }
+}
 
-            var width = Math.abs(MouseEvent.realX - mouseDown.x);
-            var height = Math.abs(MouseEvent.realY - mouseDown.y);
-            selectionBox.w = width;
-            selectionBox.h = height;
+},{"craftyjs":14,"lodash":35}],3:[function(require,module,exports){
+window.onload = logistico;
 
-            selectionBox.color('#FF' + Math.floor(10 + 40 * (1 + Math.sin((width + height) / 200))) + '00');
-        }
-    }
+function logistico() {
+  var Crafty = require('craftyjs');
+  var _ = require('lodash');
+  var iso = require('./js/iso');
+  var selection = require('./js/selection');
+
+    Crafty.init();
+    iso.grid();
+    selection.layer();
 };
 
-window.onload = logistico().init;
 
-
-},{"craftyjs":12,"lodash":33}],2:[function(require,module,exports){
+},{"./js/iso":1,"./js/selection":2,"craftyjs":14,"lodash":35}],4:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document,
     HashMap = require('./HashMap.js');
@@ -1394,7 +1413,7 @@ Crafty.matrix.prototype = {
     }
 };
 
-},{"./HashMap.js":5,"./core.js":11}],3:[function(require,module,exports){
+},{"./HashMap.js":7,"./core.js":13}],5:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -1833,7 +1852,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],4:[function(require,module,exports){
+},{"./core.js":13}],6:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -2208,7 +2227,7 @@ Crafty.DebugCanvas = {
 
 };
 
-},{"./core.js":11}],5:[function(require,module,exports){
+},{"./core.js":13}],7:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -2569,7 +2588,7 @@ var Crafty = require('./core.js'),
 
     module.exports = HashMap;
 
-},{"./core.js":11}],6:[function(require,module,exports){
+},{"./core.js":13}],8:[function(require,module,exports){
 var Crafty = require('./core.js'),
 	document = window.document;
 
@@ -2777,7 +2796,7 @@ Crafty.c("Tween", {
 	}
 });
 
-},{"./core.js":11}],7:[function(require,module,exports){
+},{"./core.js":13}],9:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -3016,7 +3035,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],8:[function(require,module,exports){
+},{"./core.js":13}],10:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document,
     DEG_TO_RAD = Math.PI / 180;
@@ -3720,7 +3739,7 @@ Crafty.c("Collision", {
     }
 });
 
-},{"./core.js":11}],9:[function(require,module,exports){
+},{"./core.js":13}],11:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -3954,7 +3973,7 @@ Crafty.c("Color", {
 });
 
 
-},{"./core.js":11}],10:[function(require,module,exports){
+},{"./core.js":13}],12:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -4936,7 +4955,7 @@ Crafty.c("Twoway", {
     }
 });
 
-},{"./core.js":11}],11:[function(require,module,exports){
+},{"./core.js":13}],13:[function(require,module,exports){
 var version = require('./version');
 
 /**@
@@ -6709,7 +6728,7 @@ if (typeof define === 'function') { // AMD
 
 module.exports = Crafty;
 
-},{"./version":31}],12:[function(require,module,exports){
+},{"./version":33}],14:[function(require,module,exports){
 var Crafty = require('./core');
 require('./2D');
 require('./animation');
@@ -6744,7 +6763,7 @@ require('./viewport');
 if(window) window.Crafty = Crafty;
 
 module.exports = Crafty;
-},{"./2D":2,"./DOM":3,"./DebugLayer":4,"./HashMap":5,"./animation":6,"./canvas":7,"./collision":8,"./color":9,"./controls":10,"./core":11,"./device":13,"./diamondiso":14,"./drawing":15,"./extensions":16,"./html":17,"./isometric":18,"./keycodes":19,"./loader":20,"./math":21,"./model":22,"./particles":23,"./scenes":24,"./sound":25,"./sprite":27,"./sprite-animation":26,"./storage":28,"./text":29,"./time":30,"./version":31,"./viewport":32}],13:[function(require,module,exports){
+},{"./2D":4,"./DOM":5,"./DebugLayer":6,"./HashMap":7,"./animation":8,"./canvas":9,"./collision":10,"./color":11,"./controls":12,"./core":13,"./device":15,"./diamondiso":16,"./drawing":17,"./extensions":18,"./html":19,"./isometric":20,"./keycodes":21,"./loader":22,"./math":23,"./model":24,"./particles":25,"./scenes":26,"./sound":27,"./sprite":29,"./sprite-animation":28,"./storage":30,"./text":31,"./time":32,"./version":33,"./viewport":34}],15:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -6903,7 +6922,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],14:[function(require,module,exports){
+},{"./core.js":13}],16:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -7066,7 +7085,7 @@ Crafty.extend({
 
     }
 });
-},{"./core.js":11}],15:[function(require,module,exports){
+},{"./core.js":13}],17:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -7631,7 +7650,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],16:[function(require,module,exports){
+},{"./core.js":13}],18:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -7877,7 +7896,7 @@ Crafty.extend({
         Crafty.stage.elem.style.background = style;
     }
 });
-},{"./core.js":11}],17:[function(require,module,exports){
+},{"./core.js":13}],19:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -7959,7 +7978,7 @@ Crafty.c("HTML", {
         return this;
     }
 });
-},{"./core.js":11}],18:[function(require,module,exports){
+},{"./core.js":13}],20:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -8142,7 +8161,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],19:[function(require,module,exports){
+},{"./core.js":13}],21:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -8359,7 +8378,7 @@ Crafty.extend({
         RIGHT: 2
     }
 });
-},{"./core.js":11}],20:[function(require,module,exports){
+},{"./core.js":13}],22:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -8798,7 +8817,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],21:[function(require,module,exports){
+},{"./core.js":13}],23:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -9895,7 +9914,7 @@ Crafty.math.Matrix2D = (function () {
 
     return Matrix2D;
 })();
-},{"./core.js":11}],22:[function(require,module,exports){
+},{"./core.js":13}],24:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -9998,7 +10017,7 @@ Crafty.c('Model', {
   }
 });
 
-},{"./core.js":11}],23:[function(require,module,exports){
+},{"./core.js":13}],25:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -10377,7 +10396,7 @@ Crafty.c("Particles", {
     }
 });
 
-},{"./core.js":11}],24:[function(require,module,exports){
+},{"./core.js":13}],26:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -10540,7 +10559,7 @@ Crafty.extend({
 
     }
 });
-},{"./core.js":11}],25:[function(require,module,exports){
+},{"./core.js":13}],27:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -11094,7 +11113,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],26:[function(require,module,exports){
+},{"./core.js":13}],28:[function(require,module,exports){
 var Crafty = require('./core.js'),
 	Animation = require('./animation.js'),
 	document = window.document;
@@ -11573,7 +11592,7 @@ Crafty.c("SpriteAnimation", {
 	}
 });
 
-},{"./animation.js":6,"./core.js":11}],27:[function(require,module,exports){
+},{"./animation.js":8,"./core.js":13}],29:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -11863,7 +11882,7 @@ Crafty.c("Sprite", {
         return this;
     }
 });
-},{"./core.js":11}],28:[function(require,module,exports){
+},{"./core.js":13}],30:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -11959,7 +11978,7 @@ Crafty.storage.remove = function(key){
   window.localStorage.removeItem(key);
 };
 
-},{"./core.js":11}],29:[function(require,module,exports){
+},{"./core.js":13}],31:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -12226,7 +12245,7 @@ Crafty.c("Text", {
     }
 
 });
-},{"./core.js":11}],30:[function(require,module,exports){
+},{"./core.js":13}],32:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -12348,9 +12367,9 @@ Crafty.c("Delay", {
     }
 });
 
-},{"./core.js":11}],31:[function(require,module,exports){
+},{"./core.js":13}],33:[function(require,module,exports){
 module.exports = "0.6.2";
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var Crafty = require('./core.js'),
     document = window.document;
 
@@ -13075,7 +13094,7 @@ Crafty.extend({
     }
 });
 
-},{"./core.js":11}],33:[function(require,module,exports){
+},{"./core.js":13}],35:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -25314,4 +25333,4 @@ Crafty.extend({
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[1]);
+},{}]},{},[3]);
