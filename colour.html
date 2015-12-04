@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Colour</title>
+</head>
+<body>
+<script>
+    var colour = location.search.split('colour=')[1];
+    if (colour && colour.match(/^(?:[0-9a-f]{3}){1,2}$/i)) {
+        colour = '#' + colour
+    }
+    console.info('Using', colour);
+    document.body.style.backgroundColor = colour;
+</script>
+</body>
+</html>
