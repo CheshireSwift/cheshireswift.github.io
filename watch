@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Colour</title>
+</head>
+<body>
+	<iframe
+		width="560"
+		height="315"
+		frameborder="0"
+		allowfullscreen>
+	</iframe>
+	<script>
+		var videoId = location.search.split('v=')[1];
+		document.querySelectorAll('iframe')[0].setAttribute('src', 'http://www.youtube.com/embed/' + videoId + '?&rel=0&showinfo=0&modestbranding=1&hd=1')
+	</script>
+</body>
+</html>
+
