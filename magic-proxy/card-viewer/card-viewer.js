@@ -1,7 +1,6 @@
 'use strict'
 
-const gameDir = 'C:/Users/Swift/Documents/OCTGN/GameDatabase/A6C8D2E8-7CD8-11DD-8F94-E62B56D89593/proxy/'
-//const gameDir = 'C:/Users/STC/Desktop/KUDU dump/STC/Documents/OCTGN/GameDatabase/A6C8D2E8-7CD8-11DD-8F94-E62B56D89593/proxy/'
+const gameDir = 'images/'
 function setImage(id, pathSuffix) {
   $(id).attr('src', gameDir + pathSuffix)
 }
