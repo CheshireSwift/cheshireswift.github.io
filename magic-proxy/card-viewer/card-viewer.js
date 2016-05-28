@@ -6,7 +6,7 @@ function setImage(id, pathSuffix) {
 }
 
 var parseColor = rawColor =>
-  ({ white: 'W', blue: 'U', black: 'B', red: 'R', green: 'G' }[rawColor.toLowerCase()] || rawColor)
+  ({ white: 'W', blue: 'U', black: 'B', red: 'R', green: 'G' }[rawColor.toLowerCase()] || rawColor).toLowerCase()
 
 function pictureCategory(card) {
   switch (true) {
