@@ -1,0 +1,71 @@
+.card-viewer {
+  font: 18px 'mplantin-forchatregular';
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.card-viewer p {
+  margin: 8px 0;
+}
+
+.card-viewer>img {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.card-viewer>#rarity {
+  position: absolute;
+  font-size: 36px;
+  top: 191px;
+  right: 30px;
+}
+
+.card-viewer>#name {
+  position: absolute;
+  left: -345px;
+  top: 34px;
+}
+
+.card-viewer>#manaCost {
+  position: absolute;
+  right: 30px;
+  top: 34px;
+}
+
+.card-viewer>#type {
+  position: absolute;
+  left: -344px;
+  top: 205px;
+}
+
+.card-viewer>#text {
+  position: absolute;
+  left: -375px;
+  top: 240px;
+  margin: 0 37px;
+}
+
+.card-viewer>#flavor {
+  position: absolute;
+  left: -375px;
+  bottom: -470px;
+  margin: 0 37px;
+  font-style: italic;
+}
+
+.card-viewer>#ptbox {
+  position: absolute;
+  font-size: 27px;
+  top: 474px;
+  right: 32px;
+}
+
+.card-viewer>img#art-img {
+  position: absolute;
+  left: -375px;
+  top: 60px;
+  margin: 0 30px;
+}
+

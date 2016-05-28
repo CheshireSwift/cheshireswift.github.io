@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="MTGwebfont/stylesheet.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="card-viewer/card-viewer.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="text-input/text-input.css" type="text/css" charset="utf-8" />
+  <link rel="stylesheet" href="https://rawgit.com/starryknight64/mtgicons/v1.1.4/dist/mtgicons.css" />
+  <link rel="import" href="https://rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-input/paper-textarea.html">
+  <link rel="import" href="https://rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-toast/paper-toast.html">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.6.1/js-yaml.min.js"></script>
+  <style type="text/css">
+    body {
+      display: flex;
+      height: 100vh;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <paper-textarea id="text-entry" label="MtG YAML"></paper-textarea>
+
+  <div class="card-viewer">
+    <img id="back-main-img" src="">
+    <img id="back-half-img" src="">
+    <img id="art-img" src="" width="315" height="140">
+    <img id="rules-main-img" src="">
+    <img id="rules-half-img" src="">
+    <img id="type-img" src="">
+
+    <div id="rarity">●</div>
+    <div id="name"></div>
+    <div id="manaCost"></div>
+    <div id="type"></div>
+    <div id="text"></div>
+    <div id="flavor"></div>
+
+    <div id="ptbox"></div>
+  </div>
+</div>
+<paper-toast text=""></paper-toast>
+<script src="card-viewer/card-viewer.js"></script>
+<script>
+  var toast = $('paper-toast')[0]
+  $('#text-entry').on('input', e => {
+    toast.text = cardViewer.updateCard(e)
+    toast.open()
+  })
+</script>
+</body>
+</html>
