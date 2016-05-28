@@ -1,0 +1,14 @@
+paper-textarea {
+  width: 100%;
+  margin: 0 24px;
+}
+
+paper-textarea textarea {
+  font-family: monospace !important;
+}
+
+paper-toast {
+  width: 100%;
+  font-family: Helvetica;
+}
+
