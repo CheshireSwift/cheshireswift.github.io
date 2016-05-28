@@ -2,11 +2,13 @@
 
 const gameDir = 'images/'
 function setImage(id, pathSuffix) {
-  $(id).attr('src', gameDir + pathSuffix)
+  $(id).attr('src', pathSuffix.includes('undefined') ? '' : gameDir + pathSuffix)
 }
 
-var parseColor = rawColor =>
-  ({ white: 'W', blue: 'U', black: 'B', red: 'R', green: 'G' }[rawColor.toLowerCase()] || rawColor).toLowerCase()
+var parseColor = rawColor => {
+  var color = { white: 'W', blue: 'U', black: 'B', red: 'R', green: 'G' }[rawColor && rawColor.toLowerCase()] || rawColor
+  return color && color.toLowerCase()
+}
 
 function pictureCategory(card) {
   switch (true) {
@@ -65,6 +67,27 @@ function classForIcon(icon) {
   }[icon]
 }
 
+function generateColors(manaCost) {
+  var cost = manaCost.toLowerCase()
+  var retval = []
+  if (cost.includes('w')) {
+    retval.push('white')
+  }
+  if (cost.includes('u')) {
+    retval.push('blue')
+  }
+  if (cost.includes('b')) {
+    retval.push('black')
+  }
+  if (cost.includes('r')) {
+    retval.push('red')
+  }
+  if (cost.includes('g')) {
+    retval.push('green')
+  }
+  return retval
+}
+
 var cardViewer = {
   updateCard: function(e) {
     try {
@@ -86,6 +109,10 @@ var cardViewer = {
         card.loyalty ||
         ''
     )
+
+    if (!card.colors) {
+      card.colors = generateColors(card.manaCost)
+    }
 
     setImage('#back-main-img',  `back/${parseColor(card.colors[0])}.jpg`)
     setImage('#back-half-img',  `back/h${parseColor(card.colors[1])}.png`)
