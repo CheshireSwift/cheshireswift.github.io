@@ -114,6 +114,10 @@ var cardViewer = {
       card.colors = generateColors(card.manaCost)
     }
 
+    if (!card.colors.length) {
+      card.colors.push('c')
+    }
+
     setImage('#back-main-img',  `back/${parseColor(card.colors[0])}.jpg`)
     setImage('#back-half-img',  `back/h${parseColor(card.colors[1])}.png`)
     setImage('#rules-main-img', `rules/${parseColor(card.colors[0])}.png`)
