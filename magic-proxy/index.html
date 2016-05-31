@@ -45,9 +45,14 @@
 <script>
   var toast = $('paper-toast')[0]
   $('#text-entry').on('input', e => {
-    toast.text = cardViewer.updateCard(e)
+    var text = e.target.value
+    window.location.hash = '#' + encodeURIComponent(text)
+    toast.text = cardViewer.updateCard(text)
     toast.open()
-  })
+  }).prop(
+    'value',
+    decodeURIComponent(window.location.hash.substring(1))
+  ).trigger('input')
 </script>
 </body>
 </html>

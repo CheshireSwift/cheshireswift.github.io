@@ -150,9 +150,9 @@ function getRarityColor(rarity) {
 }
 
 var cardViewer = {
-  updateCard: function(e) {
+  updateCard: function(textAreaValue) {
     try {
-      var inputString = e.target.value.replace(/\\u00e2\\u20ac\\u201d|\u00e2\u20ac\u201d/g, '\u2014')
+      var inputString = textAreaValue.replace(/\\u00e2\\u20ac\\u201d|\u00e2\u20ac\u201d/g, '\u2014')
       var card = jsyaml.load(inputString)
     } catch(ex) {
       return ex
