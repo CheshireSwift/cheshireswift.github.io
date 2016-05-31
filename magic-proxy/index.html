@@ -43,16 +43,27 @@
 <paper-toast text=""></paper-toast>
 <script src="card-viewer/card-viewer.js"></script>
 <script>
-  var toast = $('paper-toast')[0]
-  $('#text-entry').on('input', e => {
+  var textFromURI = () => decodeURIComponent(window.location.hash.substring(1))
+  function updateFromInput(e) {
     var text = e.target.value
     window.location.hash = '#' + encodeURIComponent(text)
     toast.text = cardViewer.updateCard(text)
     toast.open()
-  }).prop(
-    'value',
-    decodeURIComponent(window.location.hash.substring(1))
-  ).trigger('input')
+  }
+
+  var toast = $('paper-toast')[0]
+  var textEntry = $('#text-entry')
+    .prop('value', textFromURI())
+    .on('input', updateFromInput)
+    .trigger('input')
+
+  $(window).on('hashchange', function() {
+    if (window.location.hash.substring(1) !== textEntry.prop('value')) {
+      textEntry
+        .prop('value', textFromURI())
+        .trigger('input')
+    }
+  })
 </script>
 </body>
 </html>
