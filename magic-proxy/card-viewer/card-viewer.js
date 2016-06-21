@@ -49,18 +49,16 @@ function pictureCategory(card) {
 
 var elemWithClass = c => `<i class="mtg ${c}"></i>`
 
-var iconForAbbreviation = (_, icons) => icons
-  .replace(/(.)\/(.)/gi, (_, first, second) => elemWithclass(classForHybrid(first, second)))
-  .split('')
-  .map(icon => elemWithClass(classForIcon(icon)))
-  .join('')
-
-function classForHybrid(first, second) {
-  return '.hybrid-' + first + second
-}
+var iconForAbbreviation = icon => elemWithClass(classForIcon(icon))
 
 function classForIcon(icon) {
   icon = icon.toLowerCase()
+
+  var hybridMatch = /(.)\/(.)/.exec(icon)
+  if (hybridMatch) {
+    return 'hybrid-' + hybridMatch[1] + hybridMatch[2]
+  }
+
   if (icon.match(/\d|[wubrgxyz]/)) {
     return 'mana-' + icon
   }
@@ -109,7 +107,7 @@ function copyField(card, field, opts={}) {
   }
 
   if (opts.icons) {
-    text = text.replace(/{(.+?)}/gi, iconForAbbreviation)
+    text = text.replace(/{(.+?)}/gi, (_, icon) => iconForAbbreviation(icon))
   }
 
   if (opts.longDash) {
@@ -171,6 +169,7 @@ var cardViewer = {
     $('#ptbox').html(getPt(card.power, card.toughness, card.loaylty))
 
     var colors = getColors(card.colors, card.manaCost)
+    if (colors.length > 2) { colors = colors.map(_ => 'm') }
     setImage('back-main-img',  `back/${parseColor(colors[0])}.jpg`)
     setImage('back-half-img',  `back/h${parseColor(colors[1])}.png`)
     setImage('rules-main-img', `rules/${parseColor(colors[0])}.png`)
