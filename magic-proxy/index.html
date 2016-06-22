@@ -10,7 +10,8 @@
   <link rel="import" href="https://rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-input/paper-textarea.html">
   <link rel="import" href="https://rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-toast/paper-toast.html">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.6.1/js-yaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.6.1/js-yaml.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.84/Bacon.min.js"></script>
   <style type="text/css">
     body {
       display: flex;
@@ -44,18 +45,21 @@
 <script src="card-viewer/card-viewer.js"></script>
 <script>
   var textFromURI = () => decodeURIComponent(window.location.hash.substring(1))
-  function updateFromInput(e) {
-    var text = e.target.value
+  function updateFromInput(text) {
     window.location.hash = '#' + encodeURIComponent(text)
     toast.text = cardViewer.updateCard(text)
     toast.open()
   }
 
   var toast = $('paper-toast')[0]
-  var textEntry = $('#text-entry')
-    .prop('value', textFromURI())
-    .on('input', updateFromInput)
-    .trigger('input')
+  var textEntry = $('#text-entry').prop('value', textFromURI())
+
+  textEntry.asEventStream('input')
+    .debounce(500)
+    .map('.target.value')
+    .onValue(updateFromInput)
+
+  textEntry.trigger('input')
 
   $(window).on('hashchange', function() {
     if (window.location.hash.substring(1) !== textEntry.prop('value')) {
