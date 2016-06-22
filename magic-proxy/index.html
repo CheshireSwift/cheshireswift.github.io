@@ -7,11 +7,13 @@
   <link rel="stylesheet" href="card-viewer/card-viewer.css" type="text/css" charset="utf-8" />
   <link rel="stylesheet" href="text-input/text-input.css" type="text/css" charset="utf-8" />
   <link rel="stylesheet" href="https://rawgit.com/starryknight64/mtgicons/v1.1.4/dist/mtgicons.css" />
-  <link rel="import" href="https://rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-input/paper-textarea.html">
-  <link rel="import" href="https://rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-toast/paper-toast.html">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script>
+  <link rel="import" href="https://cdn.rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-input/paper-textarea.html">
+  <link rel="import" href="https://cdn.rawgit.com/Download/polymer-cdn/1.2.3.2/lib/paper-toast/paper-toast.html">
+  <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"></script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.6.1/js-yaml.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bacon.js/0.7.84/Bacon.min.js"></script>
+  <script src="https://cdn.rawgit.com/baconjs/bacon.model/master/dist/bacon.model.min.js"></script>
   <style type="text/css">
     body {
       display: flex;
@@ -44,29 +46,24 @@
 <paper-toast text=""></paper-toast>
 <script src="card-viewer/card-viewer.js"></script>
 <script>
-  var textFromURI = () => decodeURIComponent(window.location.hash.substring(1))
-  function updateFromInput(text) {
-    window.location.hash = '#' + encodeURIComponent(text)
+  var toast = $('paper-toast')[0]
+  var textEntry = $('#text-entry')
+  var hashTextModel = Bacon.Binding({
+    events: $(window).asEventStream('hashchange'),
+    get: () => decodeURIComponent(window.location.hash.substring(1)),
+    set: value => window.location.hash = '#' + encodeURIComponent(value)
+  })
+
+  var enteredTextModel = Bacon.Binding({
+    events: textEntry.asEventStream('input').debounce(500),
+    get: () => textEntry.prop('value'),
+    set: value => textEntry.prop('value', value)
+  })
+
+  enteredTextModel.bind(hashTextModel)
+  enteredTextModel.onValue(function(text) {
     toast.text = cardViewer.updateCard(text)
     toast.open()
-  }
-
-  var toast = $('paper-toast')[0]
-  var textEntry = $('#text-entry').prop('value', textFromURI())
-
-  textEntry.asEventStream('input')
-    .debounce(500)
-    .map('.target.value')
-    .onValue(updateFromInput)
-
-  textEntry.trigger('input')
-
-  $(window).on('hashchange', function() {
-    if (window.location.hash.substring(1) !== textEntry.prop('value')) {
-      textEntry
-        .prop('value', textFromURI())
-        .trigger('input')
-    }
   })
 </script>
 </body>
