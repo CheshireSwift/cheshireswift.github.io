@@ -1,0 +1,75 @@
+==================================================================
+https://keybase.io/cheshireswift
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://swift.swifteagle.co.uk
+  * I am cheshireswift (https://keybase.io/cheshireswift) on keybase.
+  * I have a public key with fingerprint 2812 1CFE 2934 B356 216E  1C37 5B3A 67F4 828C 069C
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "0101f9ffaa161c80d6c7494c166917f096b2c8858af0acee600a6ba6977962cf12360a",
+            "fingerprint": "28121cfe2934b356216e1c375b3a67f4828c069c",
+            "host": "keybase.io",
+            "key_id": "5b3a67f4828c069c",
+            "kid": "0101f9ffaa161c80d6c7494c166917f096b2c8858af0acee600a6ba6977962cf12360a",
+            "uid": "451b3720826a6c1a309da755d4e14d19",
+            "username": "cheshireswift"
+        },
+        "revoke": {
+            "sig_ids": [
+                "97a6b2425068702205668ad04d9000ac2536d03f1268796b0f3fc4ae2796e1090f"
+            ]
+        },
+        "service": {
+            "hostname": "swift.swifteagle.co.uk",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1467820475,
+    "expire_in": 157680000,
+    "prev": "90053f1a5e0eff27013df4feb03e2aec2d95b02a4b7cb9cf73a4554f6e0ffdd4",
+    "seqno": 13,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.53
+Comment: https://keybase.io/crypto
+
+yMJ6AnicrZJtaBRHHMYvUUtzotgPtWhQ6iJaS7zOzM7M7h544huIbb+k2FC1PWZn
+Z+62d9k9dzcxZwgaVEREFBUlNGlLK21pQYJVSU010dYi0YhiIIEGFUHxBVHkEFF8
+mT3sNz/2ywwz8/yf/++Zmb+nTEgka7x1pyuHzj0frDl/prYl0dSxoL9ds32nrKXb
+tYKoTqLoiDDKFlxHS2sAAigtKRmDFHITOJQb2MIcUmpBQwKL2oibJjGZBIwLQQFg
+1GbUMgyLIi4h0ilgWoMmXS8nglLgepGyRSZEkEuBLB3bOqEIUgG5bhBbZ9SQ2EQm
+B9TiqjDvh3GFgrNZKFKur/bUIlvFe4P+f+ZuqdphAm3dQMBElFEOmQ4shxmEOFhA
+7EArFoYi8FizUGqeF2HeDUS4wZWR1tGgBaLVL4j4ckM3p8hDLb1WswzVEWFEADUN
+gBAglJrMAdixgKLhiOjUAbpCUeeKF0hdcswEUgsBgQWk9qXyVm1bXV41j6/qNUK1
+dao6CpYrihT3Uy0FhVkK/MjnflFp8lFUSsd4UbkU12wQdva1W9Z2PUe9mCpoFUHo
++p6WhkrJIze2h5gaJgLYIA2aaCupqFk3VhCDmoodxG1Eq7JUSYhKwIgAQkpkAKg7
+EkthA10gJjhyLGIDxLBtcNvi0tAZJgRLKoCUjoO1ON96z1feuuJkuTiam/NY1BII
+rePM4LqJiZpk4q1JtfFXTiTrpv33wZfueTvRv+mn4WvDXtPqd+ro18mKbFz7AiU6
+8fiK/RfymZ0jeM74p49ug6C7b33blKlnL087fWpgx7YtA9H2i/e3gQ+efbdv+sy+
++cOj7Erl+BCaMGlfec/hW0duvt+35cH13mtLf0st72q+ebH87snJuxtH/7hX+KK7
+jzzITB7/feM3jbsf350+WD/y2VCyp3+o7kSxvf5YZbn/8Kvw5Z8/Hv3w4183/zOx
+7eri8kxveMaNJR/NrawaqB3b+vRsd/31OyMLd0bvXW4/calj1eF5P3Qtm1uzNzOv
+9+ST/lRy6BTK/DIwq9jZ9NdoZn7hEFnZ0/X59+fu9c5eMdazY2xR5+p/1xxo/uTK
+wfzPu+q+HXsFIhVm6w==
+=wMsS
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/cheshireswift
+
+==================================================================
