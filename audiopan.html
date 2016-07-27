@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <script>
+    var context
+    window.addEventListener('load', init, false)
+    function init() {
+      console.log('init')
+      try {
+        window.AudioContext = window.AudioContext||window.webkitAudioContext
+        context = new AudioContext()
+        console.log('getting media')
+        navigator.webkitGetUserMedia({audio: true}, function(localMediaStream) {
+          console.log('got media, connecting')
+          var microphone = context.createMediaStreamSource(localMediaStream)
+          var filter = context.createStereoPanner()
+
+          microphone.connect(filter)
+          filter.connect(context.destination)
+
+          var t = 0
+          window.setInterval(function() {
+            var a = Math.sin(2 * 3.142 * t/1000)
+            console.log(a)
+            filter.pan.value = a
+            t++
+          }, 1)
+        }, function(e) {console.log(e)})
+      }
+      catch (e) {
+        alert(e)
+      }
+    }
+  </script>
+</body>
+</html>
