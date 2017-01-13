@@ -69,13 +69,21 @@
   </template>
 
   <template id="template-box_section">
-    <div id="box-container"></div>
+    <div>
+      {#boxes}
+        {>box /}
+      {/boxes}
+    </div>
   </template>
 
   <template id="template-iphone">
     <div class="iphone-outer">
       <div class="iphone-screen">
-        <div id="sections-container" class="padded"></div>
+        <div class="padded">
+          {#boxSections}
+            {>box_section /}
+          {/boxSections}
+        </div>
       </div>
       <div class="iphone-home"></div>
     </div>
