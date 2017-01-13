@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta charset="utf-8">
+  <title>Adventure to Fiesta Land! ~debugging in Technicolor</title>
+  <script type="text/javascript" src="//rawgit.com/SimonWaldherr/ColorConverter.js/master/colorconverter.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.7.4/dust-full.min.js"></script>
+  <link rel="stylesheet" href="//unpkg.com/tachyons@4.5.3/css/tachyons.min.css" />
+  <link rel="stylesheet" href="//rawgit.com/isagalaev/highlight.js/master/src/styles/monokai-sublime.css">
+  <style type="text/css">
+    body {
+      padding: 20px;
+    }
+    
+    .iphone-outer {
+      background-color: black;
+      border: medium solid gray;
+      border-radius: 10px;
+      text-align: center;
+      display: inline-block;
+      padding: 40px 10px 0 10px;
+    }
+    
+    .iphone-screen {
+      width: 320px;
+      height: 568px;
+      background-color: white;
+      text-align: center;
+      overflow-y: scroll;
+    }
+    
+    .iphone-home {
+      border: thin solid gray;
+      border-radius: 100%;
+      margin: 10px;
+      height: 50px;
+      width: 50px;
+      display: inline-block;
+    }
+    
+    .padded {
+      padding: 2px;
+    }
+    
+    .box {
+      width: 20%;
+      height: 64px;
+      display: inline-block;
+      margin: 4px;
+    }
+    
+    pre>code {
+      padding: 20px !important;
+    }
+    
+    a {
+      text-decoration: none;
+    }
+    
+    .adv-hide {
+      visibility: hidden;
+    }
+  </style>
+
+  <template id="template-box">
+    <div class="box"></div>
+  </template>
+
+  <template id="template-box_section">
+    <div id="box-container"></div>
+  </template>
+
+  <template id="template-iphone">
+    <div class="iphone-outer">
+      <div class="iphone-screen">
+        <div id="sections-container" class="padded"></div>
+      </div>
+      <div class="iphone-home"></div>
+    </div>
+  </template>
+</head>
+
+<body>
+  <div class="cf">
+    <div class="fl w-70">
+      <div>
+        <a href="javascript:slides.retreat()">◀</a>
+        <a href="javascript:slides.advance()">▶</a>
+      </div>
+      <div class="adv-1 adv-hide">
+        <a href="javascript:greys()">
+          <pre><code id="greyscode"></code></pre>
+        </a>
+      </div>
+      <div class="adv-2 adv-hide">
+        <a href="javascript:rainbow()">
+          <pre><code id="rainbowcode"></code></pre>
+        </a>
+      </div>
+      <div class="adv-3 adv-hide">
+        <a href="javascript:fiesta()">
+          <pre><code id="fiestacode"></code></pre>
+        </a>
+      </div>
+    </div>
+    <div class="fl">
+      <div id="iphone-container" class="adv-0 adv-hide"></div>
+    </div>
+  </div>
+  <script>
+    /* global colorconv hljs dust */
+    function recolour(tripletMapping) {
+      var elems = document.body.getElementsByClassName('iphone-screen').item(0).getElementsByTagName('div')
+      for (var i = 0; i < elems.length; i++) {
+        var elem = elems.item(i)
+        var triplet = tripletMapping(i, elems)
+        elem.setAttribute('style', 'background: #' + colorconv.HSL2HEX([triplet.H, triplet.S, triplet.L]))
+      }
+    }
+
+    function greys() {
+      recolour((i, elems) => ({
+        H: 0,
+        S: 0,
+        L: i * 100 / elems.length
+      }))
+    }
+
+    function rainbow() {
+      recolour((i, elems) => ({
+        H: i * 360 / elems.length,
+        S: 100,
+        L: 50
+      }))
+    }
+
+    function fiesta() {
+      const PHI = (1 + Math.sqrt(5)) / 2
+      recolour(i => ({
+        H: (i * PHI * 360) % 360,
+        S: 100,
+        L: 50
+      }))
+    }
+
+    function populateCodeSnippets() {
+      document.getElementById('greyscode').textContent = greys
+      document.getElementById('rainbowcode').textContent = rainbow
+      document.getElementById('fiestacode').textContent = fiesta
+      hljs.initHighlightingOnLoad();
+    }
+
+    var slides = function() {
+      var advCounter = 0;
+
+      function advance() {
+        var elems = document.getElementsByClassName('adv-' + advCounter)
+        if (!elems.length) {
+          return
+        }
+
+        for (var i = 0; i < elems.length; i++) {
+          elems.item(i).classList.remove('adv-hide')
+        }
+        advCounter++
+      }
+
+      function retreat() {
+        if (advCounter > 0) {
+          advCounter--
+        }
+
+        var elems = document.getElementsByClassName('adv-' + advCounter)
+        for (var i = 0; i < elems.length; i++) {
+          elems.item(i).classList.add('adv-hide')
+        }
+      }
+
+      document.addEventListener('keydown', e => (e.keyCode == 39) && advance())
+      document.addEventListener('keydown', e => (e.keyCode == 37) && retreat())
+
+      return {
+        advance,
+        retreat
+      }
+    }()
+
+    function populateTemplates() {
+      var templates = document.getElementsByTagName('template')
+      for (var i = 0; i < templates.length; i++) {
+        var templateTag = templates.item(i)
+        var templateSrc = templateTag.innerHTML.replace('&gt;', '>')
+        var compiled = dust.compile(templateSrc, templateTag.id.replace(/^template-/, ''))
+        dust.loadSource(compiled)
+      }
+
+      const BOXES_PER_SECTION = 8
+      const BOX_SECTIONS = 8
+      dust.render('iphone', {
+        boxes: Array(BOXES_PER_SECTION).fill(),
+        boxSections: Array(BOX_SECTIONS).fill()
+      }, (err, out) => {
+        err && console.error(err)
+        document.getElementById('iphone-container').innerHTML = out
+      })
+    }
+
+    populateCodeSnippets()
+    populateTemplates()
+  </script>
+</body>
+
+</html>
