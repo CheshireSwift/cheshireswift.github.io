@@ -7,6 +7,7 @@
   <script type="text/javascript" src="//rawgit.com/SimonWaldherr/ColorConverter.js/master/colorconverter.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dustjs-linkedin/2.7.4/dust-full.min.js"></script>
+  <script type="text/javascript" src="//swift.swifteagle.co.uk/presentable-web/presentable-web.dist.js"></script>
   <link rel="stylesheet" href="//unpkg.com/tachyons@4.5.3/css/tachyons.min.css" />
   <link rel="stylesheet" href="//rawgit.com/isagalaev/highlight.js/master/src/styles/monokai-sublime.css">
   <style type="text/css">
@@ -94,8 +95,8 @@
   <div class="cf">
     <div class="fl w-70">
       <div>
-        <a href="javascript:slides.retreat()">◀</a>
-        <a href="javascript:slides.advance()">▶</a>
+        <a href="javascript:present.retreat()">◀</a>
+        <a href="javascript:present.advance()">▶</a>
       </div>
       <div class="adv-1 adv-hide">
         <a href="javascript:greys()">
@@ -159,41 +160,6 @@
       document.getElementById('fiestacode').textContent = fiesta
       hljs.initHighlightingOnLoad();
     }
-
-    var slides = function() {
-      var advCounter = 0;
-
-      function advance() {
-        var elems = document.getElementsByClassName('adv-' + advCounter)
-        if (!elems.length) {
-          return
-        }
-
-        for (var i = 0; i < elems.length; i++) {
-          elems.item(i).classList.remove('adv-hide')
-        }
-        advCounter++
-      }
-
-      function retreat() {
-        if (advCounter > 0) {
-          advCounter--
-        }
-
-        var elems = document.getElementsByClassName('adv-' + advCounter)
-        for (var i = 0; i < elems.length; i++) {
-          elems.item(i).classList.add('adv-hide')
-        }
-      }
-
-      document.addEventListener('keydown', e => (e.keyCode == 39) && advance())
-      document.addEventListener('keydown', e => (e.keyCode == 37) && retreat())
-
-      return {
-        advance,
-        retreat
-      }
-    }()
 
     function populateTemplates() {
       var templates = document.getElementsByTagName('template')
