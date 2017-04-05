@@ -60,8 +60,11 @@
       text-decoration: none;
     }
     
-    .adv-hide {
+    .presentation {
       visibility: hidden;
+    }
+    .presentation.slide-current, .presentation.slide-previous {
+      visibility: visible;
     }
   </style>
 
@@ -98,24 +101,24 @@
         <a href="#" onclick="present.retreat(); return false">◀</a>
         <a href="#" onclick="present.advance(); return false">▶</a>
       </div>
-      <div class="adv-1 adv-hide">
+      <div class="presentation slide-2">
         <a href="#" onclick="greys(); return false">
           <pre><code id="greyscode"></code></pre>
         </a>
       </div>
-      <div class="adv-2 adv-hide">
+      <div class="presentation slide-3">
         <a href="#" onclick="rainbow(); return false">
           <pre><code id="rainbowcode"></code></pre>
         </a>
       </div>
-      <div class="adv-3 adv-hide">
+      <div class="presentation slide-4">
         <a href="#" onclick="fiesta(); return false">
           <pre><code id="fiestacode"></code></pre>
         </a>
       </div>
     </div>
     <div class="fl">
-      <div id="iphone-container" class="adv-0 adv-hide"></div>
+      <div id="iphone-container" class="presentation slide-1"></div>
     </div>
   </div>
   <script>
@@ -183,6 +186,8 @@
 
     populateCodeSnippets()
     populateTemplates()
+
+    present.configure({ keyboard: true })
   </script>
 </body>
 
