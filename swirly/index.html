@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swirly</title>
+  <style>
+    body {
+      background: rgb(39, 40, 34);
+      margin: 0;
+    }
+    canvas#easel {
+      height: 99vh;
+      width: 100%;
+      background: rgb(39, 40, 34);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="easel"></canvas>
+  <script>
+  var canvas = document.getElementById('easel')
+  var canvasWidth = canvas.width = window.innerWidth
+  var canvasHeight = canvas.height = window.innerHeight
+  var centre = { x: canvasWidth / 2, y: canvasHeight / 2 }
+  var ctx = canvas.getContext('2d')
+
+  function rand(min, max) {
+    return Math.floor(randFloat(min, max))
+  }
+
+  function randFloat(min, max) {
+    return Math.random() * (max - min) + min
+  }
+
+  function centredRand(centre, radius) {
+    return centre + rand(-radius, radius)
+  }
+
+  function Whirlygig(x, y) {
+    this.age = 0
+    this.x = x
+    this.y = y
+    this.angle = randFloat(0, 2 * Math.PI)
+    this.angleV = randFloat(0.05, 0.2)
+    this.speed = randFloat(0, 20)
+    this.accel = Math.sign(randFloat(-1, 1)) * randFloat(0.1, 0.2)
+
+    this.lineWidth = rand(3, 8)
+    this.h = rand(0, 360)
+    this.a = 255
+    this.strokeStyle = function() {
+      return `hsla(${this.h}, 100%, 50%, ${this.a})`
+    }
+
+    this.style = function(ctx) {
+      ctx.beginPath()
+      ctx.lineWidth = this.lineWidth
+      ctx.strokeStyle = this.strokeStyle()
+    }
+
+    this.move = function() {
+      this.angle += this.angleV
+      this.speed += this.accel
+      this.x += this.speed * Math.cos(this.angle)
+      this.y += this.speed * Math.sin(this.angle)
+    }
+
+    this.tick = function(ctx) {
+      this.age++
+      this.a = 20/this.age
+      this.style(ctx)
+      ctx.moveTo(this.x, this.y)
+      this.move()
+      ctx.lineTo(this.x, this.y)
+      ctx.stroke()
+    }
+  }
+
+  var wg
+  var wgCentre = centre
+  function newGig() {
+    ctx.beginPath()
+    wg = new Whirlygig(wgCentre.x, wgCentre.y)
+  }
+  newGig()
+  window.setInterval(function() {
+    wg.tick(ctx)
+    if (wg.speed < 0 || wg.age > 100 || wg.x < 0 || wg.y < 0 || wg.x > canvasWidth || wg.y > canvasHeight) {
+      newGig()
+    }
+  }, 10)
+  window.setInterval(function() {
+    ctx.fillStyle = 'rgba(39, 40, 34, 0.02)'
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+  }, 100)
+  window.setInterval(function() {
+    wgCentre = { x: rand(0, canvasWidth), y: rand(0, canvasHeight) }
+    ctx.fillStyle = 'rgba(39, 40, 34, 0.5)'
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+    newGig()
+  }, 10000)
+  //window.setInterval(function() { wg.angleV = randFloat(0.01, 0.05); wg.accel = randFloat(-0.1, 0.1) }, 1000)
+  </script>
+</body>
+</html>
