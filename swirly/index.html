@@ -47,6 +47,7 @@
 
     this.lineWidth = rand(3, 8)
     this.h = rand(0, 360)
+    this.hV = randFloat(-2, 2)
     this.a = 255
     this.strokeStyle = function() {
       return `hsla(${this.h}, 100%, 50%, ${this.a})`
@@ -67,7 +68,8 @@
 
     this.tick = function(ctx) {
       this.age++
-      this.a = 20/this.age
+      this.a = 0.5 + this.age/100
+      this.h += this.hV
       this.style(ctx)
       ctx.moveTo(this.x, this.y)
       this.move()
