@@ -157,6 +157,44 @@
       }))
     }
 
+    function eggs(o) {
+      const PHI = (1 + Math.sqrt(5)) / 2
+      recolour(i => ({
+        H: ((i+o) * PHI * 360) % 360,
+        S: 100,
+        L: 50
+      }))
+    }
+
+    function trueFiesta() {
+      present.advance()
+      setInterval(() => eggs(360 * Math.random()), 250)
+    }
+
+/* !! !! EPILEPSY WARNING !! !! */
+    function running() {
+/* !! !! EPILEPSY WARNING !! !! */
+      present.advance()
+/* !! !! EPILEPSY WARNING !! !! */
+      var ytContainer = document.createElement('div')
+/* !! !! EPILEPSY WARNING !! !! */
+      ytContainer.style.position = 'absolute'
+/* !! !! EPILEPSY WARNING !! !! */
+      ytContainer.style.top = '200px'
+/* !! !! EPILEPSY WARNING !! !! */
+      ytContainer.style.left = '200px'
+/* !! !! EPILEPSY WARNING !! !! */
+      ytContainer.innerHTML = '<iframe onload="__runrun()" width="560" height="315" src="https://www.youtube.com/embed/XCiDuy4mrWU?autoplay=1&amp;rel=0&amp;showinfo=0&amp;start=23" frameborder="0" allowfullscreen></iframe>'
+/* !! !! EPILEPSY WARNING !! !! */
+      document.body.appendChild(ytContainer)
+    }
+/* !! !! EPILEPSY WARNING !! !! */
+    function __runrun() {
+      setTimeout(() => setInterval(() => eggs(360 * Math.random()), 30), 2500)
+/* !! !! EPILEPSY WARNING !! !! */
+    }
+/* !! !! EPILEPSY WARNING !! !! */
+
     function populateCodeSnippets() {
       document.getElementById('greyscode').textContent = greys
       document.getElementById('rainbowcode').textContent = rainbow
