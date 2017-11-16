@@ -59,7 +59,17 @@
     a {
       text-decoration: none;
     }
-    
+
+    .fiesta-demo {
+      font-size: 50px;
+      position: relative;
+      top: -180px;
+      right: 20px;
+      text-align: right;
+      width: 100%;
+      display: inline-block;
+    }
+
     .presentation {
       visibility: hidden;
     }
@@ -115,6 +125,7 @@
         <a href="#" onclick="fiesta(); return false">
           <pre><code id="fiestacode"></code></pre>
         </a>
+        <a class="fiesta-demo" href="#" onclick="fiestaDemo(); return false">🎉</a>
       </div>
     </div>
     <div class="fl">
@@ -128,7 +139,7 @@
       for (var i = 0; i < elems.length; i++) {
         var elem = elems.item(i)
         var triplet = tripletMapping(i, elems)
-        elem.setAttribute('style', 'background: #' + colorconv.HSL2HEX([triplet.H, triplet.S, triplet.L]))
+        elem.style.background = '#' + colorconv.HSL2HEX([triplet.H, triplet.S, triplet.L])
       }
     }
 
@@ -194,6 +205,19 @@
 /* !! !! EPILEPSY WARNING !! !! */
     }
 /* !! !! EPILEPSY WARNING !! !! */
+
+    function fiestaDemo() {
+      setInterval(() => {
+        var newDiv = document.createElement('div')
+        newDiv.style.position = 'absolute'
+        newDiv.style.width = (5 + Math.random() * 30).toFixed() + 'vh'
+        newDiv.style.height = (5 + Math.random() * 30).toFixed() + '%'
+        newDiv.style.top = (95 * Math.random()).toFixed() + 'vh'
+        newDiv.style.left = (95 * Math.random()).toFixed() + '%'
+        document.getElementsByClassName('iphone-screen').item(0).appendChild(newDiv)
+        fiesta()
+      }, 500)
+    }
 
     function populateCodeSnippets() {
       document.getElementById('greyscode').textContent = greys
