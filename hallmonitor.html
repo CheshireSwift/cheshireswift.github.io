@@ -21,9 +21,10 @@
         openButton.style.display = 'none'
       })
 
-      document.setInterval(randomiseColor, 1000 * 60 * 60)
       const randomButton = document.getElementById('random')
       randomButton.addEventListener('click', randomiseColor)
+
+      setInterval(randomiseColor, 1000 * 60 * 60)
     </script>
   </body>
 </html>
