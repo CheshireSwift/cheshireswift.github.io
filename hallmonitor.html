@@ -8,15 +8,22 @@
   </head>
   <body>
     <button id="fullscreen">Click to open</button>
+    <button id="random">Randomise colour</button>
     <script>
+      const randomiseColor = () => {
+        const hue = Math.random() * 360
+        document.documentElement.style.backgroundColor = `hsl(${hue},100%,50%)`
+      }
+
       const openButton = document.getElementById('fullscreen')
       openButton.addEventListener('click', () => {
         document.documentElement.requestFullscreen()
         openButton.style.display = 'none'
       })
 
-      document.documentElement.style.backgroundColor = `hsl(${Math.random() *
-        360},100%,50%)`
+      document.setInterval(randomiseColor, 1000 * 60 * 60)
+      const randomButton = document.getElementById('random')
+      randomButton.addEventListener('click', randomiseColor)
     </script>
   </body>
 </html>
