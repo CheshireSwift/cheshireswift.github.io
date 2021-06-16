@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
+    integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism-okaidia.min.css"
+    integrity="sha512-mIs9kKbaw6JZFfSuo+MovjU+Ntggfoj8RwAmJbVXQ5mkAX5LlgETQEweFPI18humSPHymTb5iikEOKWF7I8ncQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"
+    integrity="sha512-YBk7HhgDZvBxmtOfUdvX0z8IH2d10Hp3aEygaMNhtF8fSOvBZ16D/1bXZTJV6ndk/L/DlXxYStP8jrF77v2MIg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <title>Brief Intro to Semantic HTML</title>
+  <style>
+    :root {
+      --prime: #F92672;
+      --delta: #0CFAA5;
+      --back: #010D09;
+      --highlighted: white;
+      --hback: #067A52;
+      --preback: #3B091B;
+      background: var(--back);
+    }
+
+    /* -- SLIDESHOW LIB -- */
+    .slide {
+      display: flex;
+      font-size: 20px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media screen and (min-width: 60em) {
+
+      html,
+      body {
+        scrollbar-width: none;
+        font-size: 16px;
+        padding: 0;
+        margin: 0;
+      }
+
+      .slide {
+        height: 100vh;
+      }
+    }
+
+    /* -- /SLIDESHOW LIB -- */
+
+    /* Composition */
+    article {
+      color: var(--delta);
+      width: 65%;
+      margin: 0 auto;
+    }
+
+    dl {
+      max-width: 100%;
+    }
+
+    /* Utility */
+    h1 {
+      text-align: center;
+    }
+
+    mark {
+      color: var(--highlighted);
+      background-color: var(--hback);
+    }
+
+    pre,
+    code {
+      max-width: 100%;
+      overflow-x: auto;
+      background: var(--preback);
+    }
+
+    strong code {
+      font-weight: bolder;
+    }
+
+
+    @media screen and (min-width: 60em) {
+      .flex {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+    }
+
+    .sample {
+      background: var(--preback);
+      border-radius: 0.5em;
+      border: 1px solid white;
+      padding: 0.5em;
+    }
+
+    /* Block */
+    blockquote {
+      border-radius: 0.5em;
+      border-left: 3px solid var(--hback);
+      padding-left: 1.2em;
+      font-style: italic;
+    }
+
+    .spectrum {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 0.5em;
+      padding: 0.5em 0.5em 1em;
+      background: linear-gradient(90deg, var(--prime), var(--delta));
+      position: relative;
+    }
+
+    .spectrum::after {
+      content: '';
+      position: absolute;
+      bottom: 0.3em;
+      left: 0.75em;
+      right: 0.75em;
+      border-radius: 0.5em;
+      height: 0.3em;
+      background: linear-gradient(90deg, black, white);
+    }
+
+
+    /* -- PRISM HAX -- */
+    pre.language-html {
+      background: var(--hback);
+      padding: 0.5em;
+    }
+
+    code.language-html {
+      background: var(--back);
+    }
+
+    .token.tag {
+      color: var(--prime);
+    }
+
+    .token.attr-name {
+      color: var(--delta);
+    }
+
+    /* -- /PRISM HAX -- */
+  </style>
+</head>
+
+<body>
+  <article>
+    <section class="slide" id="title">
+      <h1>A Brief Intro to Semantic&nbsp;HTML</h1>
+    </section>
+
+    <section class="slide" id="tldw">
+      <h2>Anti-clickbait</h2>
+      <ul>
+        <li>Using semantic HTML is good for accessibility, SEO and dev.</li>
+        <li>Some obvious ongoing costs that decrease with familiarity.</li>
+        <li>Less obvious benefits that increase with familiarity.</li>
+        <li>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element">
+            https://developer.mozilla.org/en-US/docs/Web/HTML/Element
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="slide" id="what">
+      <h2>What is <em>Semantic HTML?</em></h2>
+      <blockquote>
+        Semantic HTML is the use of HTML markup to <mark>reinforce the semantics, or meaning, of the information</mark>
+        in webpages and web applications <mark>rather than merely to define its presentation or look</mark>.
+        - <a href="https://en.wikipedia.org/wiki/Semantic_HTML">Wikipedia</a>
+      </blockquote>
+      (Highlights mine.)
+    </section>
+
+    <section class="slide" id="example" language-html>
+      <!-- Apologies in advance; there's no nice way of embedding HTML in HTML -->
+      <!-- (Don't suggest CDATA, it doesn't play nice with the Prims syntax highlighter. Alas.) -->
+      <pre><code class="language-html">&lt;div class=&quot;slide&quot; id=&quot;what&quot;&gt;
+  &lt;div class=&quot;title&quot;&gt;What is &lt;span class=&quot;italic&quot;&gt;Semantic HTML?&lt;/span&gt;&lt;/div&gt;
+  &lt;div class=&quot;quote&quot;&gt;
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    &lt;span class=&quot;highlight&quot;&gt;sed do eiusmod tempor
+    incididunt&lt;/span&gt; ut labore et dolore magna aliqua.
+  &lt;/div&gt;
+  (Highlights mine.)
+&lt;/div&gt;</code></pre>
+      <pre><code class="language-html">&lt;section class=&quot;slide&quot; id=&quot;what&quot;&gt;
+  &lt;h2&gt;What is &lt;em&gt;Semantic HTML?&lt;/em&gt;&lt;/h2&gt;
+  &lt;blockquote&gt;
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    &lt;mark&gt;sed do eiusmod tempor incididunt&lt;/mark&gt; ut
+    labore et dolore magna aliqua.
+  &lt;/blockquote&gt;
+  (Highlights mine.)
+&lt;/section&gt;</code></pre>
+    </section>
+
+    <section class="slide" id="why">
+      <h2>Why do we care?</h2>
+      <ul>
+        <li>Accessibility</li>
+        <li>SEO</li>
+        <li>Ease of development</li>
+      </ul>
+    </section>
+
+    <section class="slide" id="freebies">
+      <h2>Good news!</h2>
+      <p>Headings <code>h1</code>-<code>h6</code> are one of the most important pieces of semantic information in a
+        page.</p>
+      <p>(Hopefully you're already using them.)</p>
+    </section>
+
+    <section class="slide" id="beyond">
+      <h2>Going beyond headings</h2>
+      <ul>
+        <li><em>"Can I be more precise?"</em></li>
+        <li>Spectrum of semantics:
+          <ul>
+            <li class="spectrum">
+              <code>div</code>
+              <code>section</code>
+              <code>form</code>
+            </li>
+            <li class="spectrum">
+              <code>span</code>
+              <code>code</code>
+              <code>button</code>
+            </li>
+        </li>
+      </ul>
+      <li>Starting points:
+        <ul>
+          <li>Page regions: <code>main</code>, <code>nav</code>, <code>header</code>/<code>footer</code></li>
+          <li>Content structure:
+            <code>article</code>,
+            <strong><code>section</code></strong>,
+            <code>aside</code>,
+            <code>p</code>
+          </li>
+          <li>Text: <code>em</code>, <code>strong</code>, <code>code</code>, <code>mark</code></li>
+          <!-- Oh boy is it confusing to keep writing "<code>tag</code>" rather than "<tag>"" -->
+        </ul>
+      </li>
+      </ul>
+    </section>
+
+    <section class="slide" id="bonus">
+      <dl>
+        <dt>Details/summary</dt>
+        <dd class="flex">
+          <pre><code class="language-html">&lt;details&gt;
+  &lt;summary&gt;
+    Expand Deet
+  &lt;/summary&gt;
+  Hello there.
+&lt;/details&gt;</code></pre>
+          <details class="sample">
+            <summary>
+              Expand Deet
+            </summary>
+            Hello there.
+          </details>
+        </dd>
+        <dt>Definition lists</dt>
+        <dd>
+          <pre><code class="language-html">&lt;dl&gt;
+  &lt;dt&gt;MDN Glossary - Semantics&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href=&quot;...&quot;&gt;...&lt;/a&gt;&lt;/dd&gt;&lt;/dt&gt;
+  &lt;dt&gt;MDN HTML Elements&lt;/dt&gt;
+  &lt;dd&gt;&lt;a href=&quot;...&quot;&gt;...&lt;/a&gt;&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+      </dl>
+    </section>
+
+    <section class="slide" id="conclusion">
+      <h2>Be suspicious of every <code>div</code></h2>
+      <dl>
+        <dt>MDN Glossary - Semantics</dt>
+        <dd>
+          <a href="https://developer.mozilla.org/en-US/docs/Glossary/Semantics#semantics_in_html">
+            https://developer.mozilla.org/en-US/docs/Glossary/Semantics#semantics_in_html
+          </a>
+        </dd>
+        </dt>
+        <strong>
+          <dt>MDN HTML Elements</dt>
+          <dd>
+            <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element">
+              https://developer.mozilla.org/en-US/docs/Web/HTML/Element
+            </a>
+          </dd>
+        </strong>
+        <dt>Softwire Tech Talks - Digital Accessibility</dt>
+        <dd>
+          <a href="https://soundcloud.com/softwire_techtalks/digital-accessibility">
+            https://soundcloud.com/softwire_techtalks/digital-accessibility
+          </a>
+        </dd>
+        <dt>Slides</dt>
+        <dd><a href="http://swift.swifteagle.co.uk/semantics.html">http://swift.swifteagle.co.uk/semantics.html</a></dd>
+      </dl>
+    </section>
+  </article>
+
+  <script>
+    const slides = document.getElementsByClassName('slide')
+    const identifiers = [...slides].map(slide => slide.id)
+    const listener = ({ key }) => {
+      const slideIndex = Math.max(identifiers.indexOf(window.location.hash.substring(1)), 0)
+      const newIndex = ({
+        ArrowLeft: Math.max(slideIndex - 1, 0),
+        ArrowRight: Math.min(slideIndex + 1, identifiers.length - 1),
+      })[key]
+
+      if (newIndex == null) {
+        return
+      }
+
+      const newIdentifier = identifiers[newIndex]
+      if (!newIdentifier) {
+        return
+      }
+
+      window.location.href = '#' + newIdentifier
+    }
+    window.addEventListener('keyup', listener)
+  </script>
+</body>
+
+</html>
