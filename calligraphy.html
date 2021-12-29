@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calligraphy Pad</title>
+  <style>
+    html,
+    body,
+    #pad {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #controls {
+      position: absolute;
+      top: 0.5em;
+      right: 0.5em;
+      opacity: 0.33;
+      text-align: right;
+    }
+
+    #controls:hover {
+      opacity: 1.0;
+    }
+
+    #nib_display {
+      margin: 0 auto;
+      width: 6em;
+      height: 6em;
+      border: 1px solid black;
+    }
+
+    button {
+      width: 2.5em;
+      height: 2.5em;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="pad"></canvas>
+  <div id="controls">
+    <canvas id="nib_display"></canvas>
+    <div>
+      Size
+      <button onclick="window.button_events.increaseSize()">+</button>
+      <button onclick="window.button_events.decreaseSize()">-</button>
+    </div>
+    <div>
+      Angle
+      <button onclick="window.button_events.rotateLeft()">⤿</button>
+      <button onclick="window.button_events.rotateRight()">⤾</button>
+    </div>
+  </div>
+  <script>
+    window.modules = {}
+  </script>
+  <script>
+    window.modules.drawing = ({ padScale, ctx }, state) => {
+      const drawNib = (context, start, end) => {
+        const nibXOffset = state.nibWidth * Math.cos(Math.PI * 2 * state.nibAngle / 360) / 2
+        const nibYOffset = -state.nibWidth * Math.sin(Math.PI * 2 * state.nibAngle / 360) / 2
+
+        context.beginPath()
+        context.moveTo(start.x - nibXOffset, start.y - nibYOffset)
+        context.lineTo(start.x + nibXOffset, start.y + nibYOffset)
+        context.lineTo(end.x + nibXOffset, end.y + nibYOffset)
+        context.lineTo(end.x - nibXOffset, end.y - nibYOffset)
+        context.closePath()
+        context.fill()
+      }
+
+      const render = () => {
+        if (!state.drawing) {
+          return
+        }
+
+        drawNib(ctx, state.lastPos, state.mousePos)
+
+        state.lastPos = state.mousePos
+      }
+
+      const loop = () => {
+        requestAnimationFrame(loop)
+        render()
+      }
+
+      const updateNib = (nibDisplay) => {
+        const nibCtx = nibDisplay.getContext('2d');
+        const { width, height } = nibDisplay
+
+        nibCtx.clearRect(0, 0, width, height);
+
+        nibCtx.font = '36px serif'
+        nibCtx.fillText(`${state.nibWidth}px, ${state.nibAngle}°`, 4, height - 6)
+
+        drawNib(
+          nibCtx,
+          { x: width / 2 - padScale, y: height / 2 - padScale },
+          { x: width / 2 + padScale, y: height / 2 + padScale },
+        )
+      }
+
+      return { loop, updateNib }
+    }
+  </script>
+  <script>
+    window.modules.events = ({ pad, updateNib }, state) => {
+      const calculateMousePos = ({ clientX, clientY }) => {
+        const { left, top } = pad.getBoundingClientRect()
+        return {
+          x: padScale * (clientX - left),
+          y: padScale * (clientY - top),
+        }
+      }
+
+      const mousedown = (e) => {
+        state.drawing = true
+        state.lastPos = calculateMousePos(e)
+      }
+      const mouseup = () => {
+        state.drawing = false
+      }
+      const mousemove = (e) => {
+        state.mousePos = calculateMousePos(e)
+      }
+
+      const touchstart = (e) => {
+        const { clientX, clientY } = e.touches[0]
+        state.mousePos = calculateMousePos({ clientX, clientY })
+        mousedown({ clientX, clientY })
+      }
+      const touchend = (e) => {
+        mouseup()
+      }
+      const touchmove = (e) => {
+        const { clientX, clientY } = e.touches[0]
+        mousemove({ clientX, clientY })
+      }
+
+      const preventCanvasEvent = (e) => {
+        if (e.target === pad) {
+          e.preventDefault()
+        }
+      }
+
+      const increaseSize = () => {
+        state.nibWidth += 5;
+        updateNib()
+      }
+      const decreaseSize = () => {
+        state.nibWidth -= 5;
+        updateNib()
+      }
+      const rotateLeft = () => {
+        state.nibAngle += 5;
+        updateNib()
+      }
+      const rotateRight = () => {
+        state.nibAngle -= 5;
+        updateNib()
+      }
+
+      return {
+        apply: (el, ev) => {
+          Object.entries(ev).forEach(([event, handler]) => {
+            el.addEventListener(event, handler)
+          })
+        },
+        pad: { mousedown, mouseup, mousemove, touchstart, touchend, touchmove },
+        body: {
+          touchstart: preventCanvasEvent,
+          touchend: preventCanvasEvent,
+          touchmove: preventCanvasEvent
+        },
+        button: {
+          increaseSize,
+          decreaseSize,
+          rotateLeft,
+          rotateRight,
+        }
+      }
+    }
+  </script>
+  <script>
+    const padScale = 2
+
+    const pad = document.getElementById('pad')
+    const nibDisplay = document.getElementById('nib_display')
+    const setCanvasSize = (canvas) =>
+      createImageBitmap(canvas).then(bitmap => {
+        canvas.width = canvas.offsetWidth * padScale
+        canvas.height = canvas.offsetHeight * padScale
+        canvas.getContext('2d').drawImage(bitmap, 0, 0)
+      })
+
+    setCanvasSize(pad)
+    setCanvasSize(nibDisplay).then(() => {
+      drawing.updateNib(nibDisplay)
+    })
+    window.addEventListener('resize', () => { setCanvasSize(pad) })
+
+    const state = {
+      drawing: false,
+      mousePos: { x: 0, y: 0 },
+      lastPos: this.mousePos,
+      nibAngle: 30,
+      nibWidth: 20,
+    }
+
+    const ctx = pad.getContext('2d')
+    ctx.fillStyle = 'black'
+    ctx.lineWidth = padScale * 4
+
+    const drawing = window.modules.drawing(
+      { ctx, padScale },
+      state,
+    )
+    drawing.loop()
+
+    const events = window.modules.events(
+      { pad, updateNib: () => { drawing.updateNib(nibDisplay) } },
+      state,
+    )
+    events.apply(pad, events.pad)
+    events.apply(document.body, events.body)
+    window.button_events = events.button
+  </script>
+</body>
+
+</html>
