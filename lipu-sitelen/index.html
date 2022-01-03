@@ -17,7 +17,15 @@
     <input type="color" id="background_color">
     <input type="color" id="text_color">
     <input type="color" id="modifier_color">
-    <button class="w-l">?</button>
+    <button class="w-l" onclick="alert(`
+Type words to produce sitelen pona glyphs
+  e.g. 'o sitelen'
+
+Use '>' to put a modifier inside the preceding word
+  e.g. 'mama>mi'
+
+Use '//' to move to a new line.
+    `.trim())">?</button>
   </div>
   <div id="output" class="sitelen ta-center text-3xl"></div>
   
