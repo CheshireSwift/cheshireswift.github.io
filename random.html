@@ -26,6 +26,18 @@
       padding: 1em;
       max-width: 10em;
     }
+
+    .slide {
+      position: relative;
+      animation: slidein 0.35s ease-out forwards
+    }
+
+    @keyframes slidein {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
   </style>
 </head>
 
@@ -39,11 +51,13 @@
       const index = Math.floor(Math.random() * items.length)
       const item = items[index]
       items.splice(index, 1)
-      shuffled.push(item)
+      shuffled.push([item, index])
     }
 
-    shuffled.forEach(item => {
+    shuffled.forEach(([item, originalIndex], i) => {
       const itemNode = document.createElement('div')
+      itemNode.className = 'slide'
+      itemNode.style.transform = `translateY(${(originalIndex - i) * 100}%)`
       itemNode.appendChild(document.createTextNode(item))
       app.appendChild(itemNode)
     })
