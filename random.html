@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>List Randomiser</title>
+  <style>
+    body {
+      font: 40pt sans-serif;
+      line-height: 1.4;
+      background: #ffffee;
+      color: #111122;
+    }
+
+    @media screen and (prefers-color-scheme: dark) {
+      body {
+        background: #111122;
+        color: #ffffee;
+      }
+    }
+
+    #caesar {
+      margin: 0 auto;
+      padding: 1em;
+      max-width: 10em;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="caesar"></div>
+  <script>
+    const app = document.getElementById('caesar')
+    const items = new URLSearchParams(window.location.search).get('items').split(',')
+    const shuffled = []
+    while (items.length) {
+      const index = Math.floor(Math.random() * items.length)
+      const item = items[index]
+      items.splice(index, 1)
+      shuffled.push(item)
+    }
+
+    shuffled.forEach(item => {
+      const itemNode = document.createElement('div')
+      itemNode.appendChild(document.createTextNode(item))
+      app.appendChild(itemNode)
+    })
+  </script>
+</body>
+
+</html>
