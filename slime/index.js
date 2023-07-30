@@ -6,10 +6,24 @@ init().then(() => {
   const canvas = document.getElementById('drawing')
   const ctx = canvas.getContext('2d')
 
-  canvas.setAttribute('width', Slime.width())
-  canvas.setAttribute('height', Slime.height())
+  const WIDTH = Slime.width()
+  const HEIGHT = Slime.height()
+  canvas.setAttribute('width', WIDTH)
+  canvas.setAttribute('height', HEIGHT)
 
   const slime = Slime.new(10000)
+
+  const forwardMouseEvent = (ev) => {
+    canvas.addEventListener(ev, (e) => {
+      const slimeX = (e.x / window.innerWidth) * WIDTH
+      const slimeY = (e.y / window.innerHeight) * HEIGHT
+      slime[ev](slimeX, slimeY)
+    })
+  }
+
+  forwardMouseEvent('mousedown')
+  forwardMouseEvent('mouseup')
+  forwardMouseEvent('mousemove')
 
   // let terminate = false
   let prevTime
