@@ -1,4 +1,4 @@
-import init, { set_panic_hook, Slime } from './pkg/slime.js'
+import init, { set_panic_hook, Slime } from '../pkg_mob/slime.js'
 
 init().then(() => {
   set_panic_hook()
