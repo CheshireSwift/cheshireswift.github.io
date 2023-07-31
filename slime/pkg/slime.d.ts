@@ -20,6 +20,10 @@ export class Slime {
 */
   static mobile(): boolean;
 /**
+* @returns {boolean}
+*/
+  static beefy(): boolean;
+/**
 * @param {number} agent_count
 * @returns {Slime}
 */
@@ -55,7 +59,7 @@ export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly set_panic_hook: () => void;
   readonly __wbg_slime_free: (a: number) => void;
-  readonly slime_mobile: () => number;
+  readonly slime_beefy: () => number;
   readonly slime_new: (a: number) => number;
   readonly slime_simulate: (a: number, b: number, c: number, d: number) => void;
   readonly slime_mousedown: (a: number, b: number, c: number) => void;
@@ -64,6 +68,7 @@ export interface InitOutput {
   readonly slime_color: (a: number) => void;
   readonly slime_width: () => number;
   readonly slime_height: () => number;
+  readonly slime_mobile: () => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;

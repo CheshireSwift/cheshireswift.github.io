@@ -3,6 +3,7 @@
 export const memory: WebAssembly.Memory;
 export function __wbg_slime_free(a: number): void;
 export function slime_mobile(): number;
+export function slime_beefy(): number;
 export function slime_new(a: number): number;
 export function slime_simulate(a: number, b: number, c: number, d: number): void;
 export function slime_mousedown(a: number, b: number, c: number): void;

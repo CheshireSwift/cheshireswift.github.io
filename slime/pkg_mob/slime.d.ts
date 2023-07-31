@@ -20,6 +20,10 @@ export class Slime {
 */
   static mobile(): boolean;
 /**
+* @returns {boolean}
+*/
+  static beefy(): boolean;
+/**
 * @param {number} agent_count
 * @returns {Slime}
 */
@@ -55,6 +59,7 @@ export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly __wbg_slime_free: (a: number) => void;
   readonly slime_mobile: () => number;
+  readonly slime_beefy: () => number;
   readonly slime_new: (a: number) => number;
   readonly slime_simulate: (a: number, b: number, c: number, d: number) => void;
   readonly slime_mousedown: (a: number, b: number, c: number) => void;

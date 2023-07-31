@@ -199,7 +199,14 @@ export class Slime {
     * @returns {boolean}
     */
     static mobile() {
-        const ret = wasm.slime_mobile();
+        const ret = wasm.slime_beefy();
+        return ret !== 0;
+    }
+    /**
+    * @returns {boolean}
+    */
+    static beefy() {
+        const ret = wasm.slime_beefy();
         return ret !== 0;
     }
     /**
