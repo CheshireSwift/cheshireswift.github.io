@@ -236,11 +236,11 @@ export class Slime {
         wasm.slime_mousedown(this.__wbg_ptr, addHeapObject(x), addHeapObject(y));
     }
     /**
-    * @param {any} x
-    * @param {any} y
+    * @param {any} _x
+    * @param {any} _y
     */
-    mouseup(x, y) {
-        wasm.slime_mousedown(this.__wbg_ptr, addHeapObject(x), addHeapObject(y));
+    mouseup(_x, _y) {
+        wasm.slime_mouseup(this.__wbg_ptr, addHeapObject(_x), addHeapObject(_y));
     }
     /**
     * @param {any} x
@@ -248,6 +248,11 @@ export class Slime {
     */
     mousemove(x, y) {
         wasm.slime_mousemove(this.__wbg_ptr, addHeapObject(x), addHeapObject(y));
+    }
+    /**
+    */
+    color() {
+        wasm.slime_color(this.__wbg_ptr);
     }
 }
 

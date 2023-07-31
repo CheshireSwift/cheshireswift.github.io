@@ -35,15 +35,18 @@ export class Slime {
 */
   mousedown(x: any, y: any): void;
 /**
-* @param {any} x
-* @param {any} y
+* @param {any} _x
+* @param {any} _y
 */
-  mouseup(x: any, y: any): void;
+  mouseup(_x: any, _y: any): void;
 /**
 * @param {any} x
 * @param {any} y
 */
   mousemove(x: any, y: any): void;
+/**
+*/
+  color(): void;
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
@@ -55,8 +58,9 @@ export interface InitOutput {
   readonly slime_new: (a: number) => number;
   readonly slime_simulate: (a: number, b: number, c: number, d: number) => void;
   readonly slime_mousedown: (a: number, b: number, c: number) => void;
-  readonly slime_mousemove: (a: number, b: number, c: number) => void;
   readonly slime_mouseup: (a: number, b: number, c: number) => void;
+  readonly slime_mousemove: (a: number, b: number, c: number) => void;
+  readonly slime_color: (a: number) => void;
   readonly slime_width: () => number;
   readonly slime_height: () => number;
   readonly set_panic_hook: () => void;

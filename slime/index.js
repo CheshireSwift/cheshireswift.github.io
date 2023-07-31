@@ -11,7 +11,8 @@ init().then(() => {
   canvas.setAttribute('width', WIDTH)
   canvas.setAttribute('height', HEIGHT)
 
-  const slime = Slime.new(10000)
+  const slime = Slime.new(20000)
+  // const slime = Slime.new(100)
 
   const forwardMouseEvent = (ev) => {
     canvas.addEventListener(ev, (e) => {
@@ -24,6 +25,26 @@ init().then(() => {
   forwardMouseEvent('mousedown')
   forwardMouseEvent('mouseup')
   forwardMouseEvent('mousemove')
+
+  let timeoutHandle
+  document.addEventListener('mousemove', () => {
+    if (timeoutHandle) {
+      clearTimeout(timeoutHandle)
+    }
+
+    document.getElementById('help').classList.remove('fade')
+
+    timeoutHandle = setTimeout(() => {
+      document.getElementById('help').classList.add('fade')
+    }, 2000)
+  })
+
+  document.addEventListener('keypress', (e) => {
+    switch (e.key) {
+      case 'c':
+        slime.color()
+    }
+  })
 
   // let terminate = false
   let prevTime

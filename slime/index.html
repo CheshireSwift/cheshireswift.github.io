@@ -1,29 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slime</title>
+    <style>
+      @import url(https://fonts.bunny.net/css?family=amatic-sc:700);
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Slime</title>
-  <style>
-    * {
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-      background: #000000;
-    }
+      * {
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        background: #000000;
+        color: #ffffff;
+        font-size: 36pt;
+        font-family: 'Amatic SC', handwriting;
+      }
 
-    canvas#drawing {
-      width: 100%;
-      height: 100vh;
-    }
-  </style>
-</head>
+      canvas#drawing {
+        width: 100%;
+        height: 100vh;
+      }
 
-<body>
-  <canvas id="drawing"></canvas>
-  <script type="module" src="index.js"></script>
-</body>
+      #help {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 1em;
+        transition: opacity 2s;
+      }
 
+      .fade {
+        opacity: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="drawing"></canvas>
+    <aside id="help">
+      <p>Click to draw</p>
+      <p>Press C to switch color mode</p>
+    </aside>
+    <script type="module" src="index.js"></script>
+  </body>
 </html>

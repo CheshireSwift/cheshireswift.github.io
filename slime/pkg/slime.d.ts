@@ -44,12 +44,16 @@ export class Slime {
 * @param {any} y
 */
   mousemove(x: any, y: any): void;
+/**
+*/
+  color(): void;
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
 export interface InitOutput {
   readonly memory: WebAssembly.Memory;
+  readonly set_panic_hook: () => void;
   readonly __wbg_slime_free: (a: number) => void;
   readonly slime_mobile: () => number;
   readonly slime_new: (a: number) => number;
@@ -57,9 +61,9 @@ export interface InitOutput {
   readonly slime_mousedown: (a: number, b: number, c: number) => void;
   readonly slime_mouseup: (a: number, b: number, c: number) => void;
   readonly slime_mousemove: (a: number, b: number, c: number) => void;
+  readonly slime_color: (a: number) => void;
   readonly slime_width: () => number;
   readonly slime_height: () => number;
-  readonly set_panic_hook: () => void;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
   readonly __wbindgen_free: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;

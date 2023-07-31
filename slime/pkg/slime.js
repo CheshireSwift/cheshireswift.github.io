@@ -59,6 +59,11 @@ function getStringFromWasm0(ptr, len) {
     ptr = ptr >>> 0;
     return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
 }
+/**
+*/
+export function set_panic_hook() {
+    wasm.set_panic_hook();
+}
 
 let stack_pointer = 128;
 
@@ -75,11 +80,6 @@ function addHeapObject(obj) {
 
     heap[idx] = obj;
     return idx;
-}
-/**
-*/
-export function set_panic_hook() {
-    wasm.set_panic_hook();
 }
 
 let WASM_VECTOR_LEN = 0;
@@ -248,6 +248,11 @@ export class Slime {
     */
     mousemove(x, y) {
         wasm.slime_mousemove(this.__wbg_ptr, addHeapObject(x), addHeapObject(y));
+    }
+    /**
+    */
+    color() {
+        wasm.slime_color(this.__wbg_ptr);
     }
 }
 
